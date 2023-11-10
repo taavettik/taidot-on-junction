@@ -3,6 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './common/theme';
 import { PageLayout } from './components/PageLayout';
 import { ChatPage } from './pages/chat/ChatPage';
+import { DataPage } from './pages/data/DataPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Outlet,
@@ -31,7 +32,7 @@ const chatRoute = new Route({
 const dataRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/data',
-  component: () => <div>data</div>,
+  component: DataPage,
 });
 
 const routeTree = rootRoute.addChildren([chatRoute, dataRoute]);
