@@ -1,20 +1,25 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Text } from './Text';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/painload.png';
+import { HamburgerMenuIcon } from '../common/icons';
 
 export function PageLayout({ children }: { children: ReactNode }) {
   return (
     <Container>
-      <Navbar>
-        <img width={64} height={64} src={logo} />
+      <TopBar>
+        <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
 
+        <HamburgerMenuIcon size={32}></HamburgerMenuIcon>
+      </TopBar>
+
+      <Scroller>{children}</Scroller>
+
+      <BottomNav>
         <Text variant="header" color="textOnPrimary">
           HULLU pain mGanament
         </Text>
-      </Navbar>
-
-      <Scroller>{children}</Scroller>
+      </BottomNav>
     </Container>
   );
 }
@@ -22,6 +27,8 @@ export function PageLayout({ children }: { children: ReactNode }) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 100vw;
 `;
 
 const Scroller = styled.div`
@@ -29,13 +36,17 @@ const Scroller = styled.div`
   flex-direction: column;
   overflow-y: auto;
   padding: 24px 32px;
+  flex: 1;
 `;
 
-const Navbar = styled.div`
-  width: 100%;
-  background-color: ${(p) => p.theme.colors.primary};
-  width: 100%;
+const TopBar = styled.div`
+  padding: 32px 32px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const BottomNav = styled.div`
+  background-color: ${(p) => p.theme.colors.neutralBackgroundHover};
   padding: 16px;
   display: flex;
-  gap: 16px;
 `;

@@ -20,7 +20,8 @@ export const typographies = {
 export const theme = {
   typographies,
   colors: {
-    primary: '#000654',
+    primary: '#D0E0E3',
+    neutralBackgroundHover: '#E4E6F6',
     textOnPrimary: 'white',
     text: 'black',
   },
