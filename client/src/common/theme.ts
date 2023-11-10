@@ -6,6 +6,13 @@ type Typography = {
 } & CSSProperties;
 
 export const typographies = {
+  bodySmall: {
+    fontSize: '14px',
+  },
+  bodySmallBold: {
+    fontSize: '14px',
+    fontWeight: 600,
+  },
   body: {
     element: 'span',
     fontSize: '16px',
@@ -22,6 +29,7 @@ export const theme = {
   colors: {
     primary: '#D0E0E3',
     neutralBackgroundHover: '#E4E6F6',
+    mutedDarkNeutral: '#65666A',
     textOnPrimary: 'white',
     text: 'black',
   },

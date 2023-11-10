@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@tanstack/react-query": "^5.8.1",
+    "@tanstack/react-router": "^0.0.1-beta.209",
     "axios": "^1.6.1",
     "chatgpt": "^5.2.5",
     "react": "^18.2.0",

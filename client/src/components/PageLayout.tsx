@@ -2,7 +2,9 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Text } from './Text';
 import logo from '../../assets/painload.png';
-import { HamburgerMenuIcon } from '../common/icons';
+import { HamburgerMenuIcon, LampIcon } from '../common/icons';
+import { Stack } from './Stack';
+import { IconType } from 'react-icons/lib';
 
 export function PageLayout({ children }: { children: ReactNode }) {
   return (
@@ -16,11 +18,35 @@ export function PageLayout({ children }: { children: ReactNode }) {
       <Scroller>{children}</Scroller>
 
       <BottomNav>
-        <Text variant="header" color="textOnPrimary">
-          HULLU pain mGanament
-        </Text>
+        <BottomMenuItem icon={LampIcon} active>
+          Chat
+        </BottomMenuItem>
+        <BottomMenuItem icon={LampIcon}>Your data</BottomMenuItem>
+        <BottomMenuItem icon={LampIcon}>Device</BottomMenuItem>
+        <BottomMenuItem icon={LampIcon}>Account</BottomMenuItem>
       </BottomNav>
     </Container>
+  );
+}
+
+interface BottomTabProps {
+  icon: IconType;
+  children?: ReactNode;
+  active?: boolean;
+}
+
+function BottomMenuItem({ icon: Icon, children, active }: BottomTabProps) {
+  return (
+    <Stack axis="y" spacing={8} align="center">
+      <Icon size={24}></Icon>
+
+      <Text
+        variant={active ? 'bodySmallBold' : 'bodySmall'}
+        color="mutedDarkNeutral"
+      >
+        {children}
+      </Text>
+    </Stack>
   );
 }
 
@@ -47,6 +73,7 @@ const TopBar = styled.div`
 
 const BottomNav = styled.div`
   background-color: ${(p) => p.theme.colors.neutralBackgroundHover};
-  padding: 16px;
+  padding: 16px 40px;
   display: flex;
+  justify-content: space-between;
 `;
