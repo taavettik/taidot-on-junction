@@ -15,6 +15,9 @@ export function PageLayout({ children }: { children: ReactNode }) {
 
       <Scroller id="scroller">{children}</Scroller>
 
+      {/* Place to render stuff outside the scroller */}
+      <div id="context"></div>
+
       <BottomNav>
         <BottomMenuItem link="/" icon={LampIcon}>
           Chat
