@@ -33,6 +33,7 @@ const colors = {
   neutralBackgroundHover: '#E4E6F6',
   neutralBackground: '#F0F1FC',
   mutedDarkNeutral: '#65666A',
+  lightNeutral: '#F4F4F4',
   extraDarkPrimary: '#001D35',
   textOnPrimary: 'white',
   text: 'black',

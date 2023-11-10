@@ -19,16 +19,12 @@ app.post('/chat', async (req, res) => {
     return;
   }
 
-  if (!req.body.message) {
-    res.status(400).send('Missing message in body');
+  if (!req.body.messages) {
+    res.status(400).send('Missing messages in body');
     return;
   }
 
-  const previousMessages = req.body.previousMessages || [];
-  const messages = [
-    ...previousMessages,
-    { from: 'user', message: req.body.message },
-  ].slice(-6);
+  const messages = [...req.body.messages].slice(-6);
 
   try {
     const gpt = await getGpt();

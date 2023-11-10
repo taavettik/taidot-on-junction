@@ -1,21 +1,16 @@
 const baseUrl = 'http://localhost:3000';
 
+export type Message = { from: 'ai' | 'user'; message: string };
+
 export const api = {
-  chat: async ({
-    message,
-    previousMessages,
-  }: {
-    message: string;
-    previousMessages: { from: 'ai' | 'user'; message: string }[];
-  }) => {
+  chat: async (messages: Message[]) => {
     const res = await fetch(`${baseUrl}/chat`, {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({
-        message,
-        previousMessages,
+        messages,
       }),
     });
 

@@ -13,7 +13,7 @@ export function PageLayout({ children }: { children: ReactNode }) {
         <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
       </TopBar>
 
-      <Scroller>{children}</Scroller>
+      <Scroller id="scroller">{children}</Scroller>
 
       <BottomNav>
         <BottomMenuItem link="/" icon={LampIcon}>

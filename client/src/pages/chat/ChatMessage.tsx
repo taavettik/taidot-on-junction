@@ -15,7 +15,8 @@ interface Props {
 export function ChatMessage({ children, from }: Props) {
   const theme = useTheme();
 
-  const color = from ? 'neutralBackground' : 'neutralBackgroundHover';
+  const color =
+    from === 'user' ? 'neutralBackground' : 'neutralBackgroundHover';
 
   return (
     <Wrapper>
@@ -28,7 +29,7 @@ export function ChatMessage({ children, from }: Props) {
       ) : null}
 
       <MsgContainer color={color}>
-        {from === 'user' && <Spacer spacing={8} axis="x"></Spacer>}
+        {from === 'user' && <Spacer spacing={24} axis="x"></Spacer>}
         <Text variant="body">{children}</Text>
       </MsgContainer>
 

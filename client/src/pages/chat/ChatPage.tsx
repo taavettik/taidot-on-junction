@@ -1,31 +1,48 @@
-import React, { useState } from 'react';
-import { api } from '../../common/api';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { Message, api } from '../../common/api';
 import { Stack } from '../../components/Stack';
 import { Text } from '../../components/Text';
 import { ChatMessage } from './ChatMessage';
+import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
 
 export function ChatPage() {
   const sendMessage = useMutation({
     mutationFn: api.chat,
     onSuccess: (data) => {
-      setResponse(data.response);
-
-      setPreviousMessages((messages) => [
+      setMessages((messages) => [
         ...messages,
-        { from: 'user', message },
         { from: 'ai', message: data.response },
       ]);
-      setMessage('');
     },
   });
 
-  const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
-
-  const [previousMessages, setPreviousMessages] = useState<
+  const [messages, setMessages] = useState<
     { from: 'ai' | 'user'; message: string }[]
   >([]);
+
+  const { handleSubmit, register, setValue, setFocus } = useForm<{
+    message: string;
+  }>();
+
+  useEffect(() => {
+    const scroller = document.getElementById('scroller');
+    if (!scroller) return;
+
+    // scroll to bottom on new message
+    scroller.scrollTo({
+      top: scroller.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [messages.length]);
+
+  useEffect(() => {
+    if (sendMessage.isPending) {
+      return;
+    }
+    setFocus('message');
+  }, [sendMessage.isPending]);
 
   return (
     <Stack axis="y" spacing={8}>
@@ -33,39 +50,54 @@ export function ChatPage() {
         Today
       </Text>
 
-      <ChatMessage from="ai">Hello</ChatMessage>
+      <MessagesContainer>
+        {messages.map((msg) => (
+          <ChatMessage from={msg.from}>{msg.message}</ChatMessage>
+        ))}
 
-      <ChatMessage from="user">Hello</ChatMessage>
+        {sendMessage.isPending && <ChatMessage from="ai">...</ChatMessage>}
+      </MessagesContainer>
 
-      <Stack axis="x" width={500}>
-        <input
-          style={{ flex: 1 }}
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
-          disabled={sendMessage.isPending}
-        ></input>
+      <InputContainer>
+        <Stack axis="x" width={500}>
+          <form
+            onSubmit={handleSubmit(async (data) => {
+              const newMessages = [
+                ...messages,
+                { from: 'user', message: data.message },
+              ] as Message[];
 
-        <button
-          disabled={sendMessage.isPending}
-          onClick={() => {
-            sendMessage.mutate({ message, previousMessages });
-          }}
-        >
-          Lähetä
-        </button>
-      </Stack>
+              setMessages(newMessages);
 
-      {previousMessages.length > 0 && (
-        <Text variant="body">
-          &gt;{' '}
-          {
-            previousMessages.filter((msg) => msg.from === 'user').slice(-1)[0]
-              .message
-          }
-        </Text>
-      )}
+              setValue('message', '');
 
-      <Text variant="body">{sendMessage.isPending ? '...' : response}</Text>
+              sendMessage.mutate(newMessages);
+            })}
+          >
+            <input
+              style={{ flex: 1 }}
+              disabled={sendMessage.isPending}
+              {...register('message')}
+            ></input>
+
+            <button disabled={sendMessage.isPending} type="submit">
+              Lähetä
+            </button>
+          </form>
+        </Stack>
+      </InputContainer>
     </Stack>
   );
 }
+
+const MessagesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  background-color: ${(p) => p.theme.colors.lightNeutral};
+`;
