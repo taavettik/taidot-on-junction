@@ -12,14 +12,17 @@
   "dependencies": {
     "@tanstack/react-query": "^5.8.1",
     "@tanstack/react-router": "^0.0.1-beta.209",
+    "@types/lodash": "^4.14.201",
     "axios": "^1.6.1",
     "chatgpt": "^5.2.5",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "styled-components": "^6.1.1",
     "swr": "^2.2.4",
     "typescript": "^5.2.2",
+    "victory": "^36.6.12",
     "vite": "^4.5.0"
   },
   "devDependencies": {
