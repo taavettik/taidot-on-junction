@@ -2,28 +2,32 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Text } from './Text';
 import logo from '../../assets/painload.png';
-import { HamburgerMenuIcon, LampIcon } from '../common/icons';
-import { Stack } from './Stack';
+import { LampIcon } from '../common/icons';
 import { IconType } from 'react-icons/lib';
+import { Link } from '@tanstack/react-router';
 
 export function PageLayout({ children }: { children: ReactNode }) {
   return (
     <Container>
       <TopBar>
         <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
-
-        <HamburgerMenuIcon size={32}></HamburgerMenuIcon>
       </TopBar>
 
       <Scroller>{children}</Scroller>
 
       <BottomNav>
-        <BottomMenuItem icon={LampIcon} active>
+        <BottomMenuItem link="/" icon={LampIcon}>
           Chat
         </BottomMenuItem>
-        <BottomMenuItem icon={LampIcon}>Your data</BottomMenuItem>
-        <BottomMenuItem icon={LampIcon}>Device</BottomMenuItem>
-        <BottomMenuItem icon={LampIcon}>Account</BottomMenuItem>
+        <BottomMenuItem link="/data" icon={LampIcon}>
+          Your data
+        </BottomMenuItem>
+        <BottomMenuItem link="/device" icon={LampIcon}>
+          Device
+        </BottomMenuItem>
+        <BottomMenuItem link="/account" icon={LampIcon}>
+          Account
+        </BottomMenuItem>
       </BottomNav>
     </Container>
   );
@@ -32,23 +36,37 @@ export function PageLayout({ children }: { children: ReactNode }) {
 interface BottomTabProps {
   icon: IconType;
   children?: ReactNode;
-  active?: boolean;
+  link?: string;
 }
 
-function BottomMenuItem({ icon: Icon, children, active }: BottomTabProps) {
+function BottomMenuItem({ icon: Icon, children, link }: BottomTabProps) {
   return (
-    <Stack axis="y" spacing={8} align="center">
+    <BottomNavLink
+      to={link}
+      activeProps={{
+        style: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
       <Icon size={24}></Icon>
 
-      <Text
-        variant={active ? 'bodySmallBold' : 'bodySmall'}
-        color="mutedDarkNeutral"
-      >
+      <Text align="center" variant="bodySmall" color="mutedDarkNeutral">
         {children}
       </Text>
-    </Stack>
+    </BottomNavLink>
   );
 }
+
+const BottomNavLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 72px;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -68,12 +86,12 @@ const Scroller = styled.div`
 const TopBar = styled.div`
   padding: 32px 32px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const BottomNav = styled.div`
   background-color: ${(p) => p.theme.colors.neutralBackgroundHover};
-  padding: 16px 40px;
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
 `;

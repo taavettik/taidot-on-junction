@@ -7,9 +7,10 @@ interface Props {
   color?: keyof Theme['colors'];
   variant: keyof Theme['typographies'];
   fontWeight?: CSSProperties['fontWeight'];
+  align?: CSSProperties['textAlign'];
 }
 
-export function Text({ variant, color = 'text', children }: Props) {
+export function Text({ variant, color = 'text', align, children }: Props) {
   const theme = useTheme();
 
   const { ...style } = theme.typographies[variant];
@@ -17,7 +18,7 @@ export function Text({ variant, color = 'text', children }: Props) {
   return (
     <BaseText
       as={'element' in style ? style.element : 'span'}
-      style={{ ...style, color: theme.colors[color] }}
+      style={{ ...style, color: theme.colors[color], textAlign: align }}
     >
       {children}
     </BaseText>
