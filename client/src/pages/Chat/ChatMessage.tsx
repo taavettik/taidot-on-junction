@@ -4,6 +4,8 @@ import { Color } from '../../common/theme';
 import { LeftArrowIcon, RightArrowIcon } from '../../common/icons';
 import painai from '../../../assets/painai.png';
 import { Stack } from '../../components/Stack';
+import { Spacer } from '../../components/Spacer';
+import { Text } from '../../components/Text';
 
 interface Props {
   children?: React.ReactNode;
@@ -25,7 +27,10 @@ export function ChatMessage({ children, from }: Props) {
         </Stack>
       ) : null}
 
-      <MsgContainer color={color}>{children}</MsgContainer>
+      <MsgContainer color={color}>
+        {from === 'user' && <Spacer spacing={8} axis="x"></Spacer>}
+        <Text variant="body">{children}</Text>
+      </MsgContainer>
 
       {from === 'user' ? (
         <RightArrowIcon
@@ -46,7 +51,7 @@ const Wrapper = styled.div`
 
 const MsgContainer = styled.div<{ color: Color }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   margin: 0.5rem 0;
   border-radius: 16px;
