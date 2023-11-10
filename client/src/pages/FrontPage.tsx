@@ -10,26 +10,39 @@ export function FrontPage() {
     onSuccess: (data) => {
       setResponse(data.response);
 
-      console.log('>> data', data);
+      setPreviousMessages((messages) => [...messages, message]);
+      setMessage('');
     },
   });
 
   const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
 
-  return (
-    <Stack axis="y">
-      <input
-        onChange={(e) => setMessage(e.target.value)}
-        value={message}
-      ></input>
+  const [previousMessages, setPreviousMessages] = useState<string[]>([]);
 
-      <button
-        disabled={sendMessage.isPending}
-        onClick={() => sendMessage.mutate(message)}
-      >
-        Lähetä
-      </button>
+  return (
+    <Stack axis="y" spacing={8}>
+      <Stack axis="x" width={500}>
+        <input
+          style={{ flex: 1 }}
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+          disabled={sendMessage.isPending}
+        ></input>
+
+        <button
+          disabled={sendMessage.isPending}
+          onClick={() => {
+            sendMessage.mutate(message);
+          }}
+        >
+          Lähetä
+        </button>
+      </Stack>
+
+      {previousMessages.length > 0 && (
+        <Text variant="body">&gt; {previousMessages.slice(-1)[0]}</Text>
+      )}
 
       <Text variant="body">{sendMessage.isPending ? '...' : response}</Text>
     </Stack>

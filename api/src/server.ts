@@ -24,15 +24,27 @@ app.post('/chat', async (req, res) => {
     return;
   }
 
-  const gpt = await getGpt();
+  try {
+    const gpt = await getGpt();
 
-  const gptResponse = await gpt.sendMessage(req.body.message);
-  console.log(gptResponse.text);
+    const gptResponse = await gpt.sendMessage(
+      `This is a play portraing a doctor's appointment. The doctor specializes in chronic pain treatment.
+      Give the next line from the doctor in less than 280 characters. Respond with only what the doctor says. The patient's line is: "${req.body.message.replace(
+        /"/g,
+        "'",
+      )}"`,
+    );
 
-  lastMessage = Date.now();
-  res.send({
-    response: gptResponse.text,
-  });
+    const response = gptResponse.text.replace(/(^")|("$)|(doctor: ")/gi, '');
+
+    lastMessage = Date.now();
+    res.send({
+      response,
+    });
+  } catch (e) {
+    res.sendStatus(500);
+    return;
+  }
 });
 
 app.listen(port, () => {
