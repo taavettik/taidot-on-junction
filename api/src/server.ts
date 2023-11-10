@@ -24,18 +24,28 @@ app.post('/chat', async (req, res) => {
     return;
   }
 
+  const previousMessages = req.body.previousMessages || [];
+  const messages = [
+    ...previousMessages,
+    { from: 'user', message: req.body.message },
+  ].slice(-6);
+
   try {
     const gpt = await getGpt();
 
-    const gptResponse = await gpt.sendMessage(
-      `This is a play portraing a doctor's appointment. The doctor specializes in chronic pain treatment.
-      Give the next line from the doctor in less than 280 characters. Respond with only what the doctor says. The patient's line is: "${req.body.message.replace(
-        /"/g,
-        "'",
-      )}"`,
-    );
+    const prompt = `This is a play portraing a doctor's appointment. The doctor specializes in chronic pain treatment.
+    Give the next line from the doctor in less than 280 characters. Respond with only what the doctor says. The previous lines are here:
+    ${messages
+      .map(
+        (msg) => `${msg.from === 'ai' ? 'Doctor' : 'Patient'}: ${msg.message}`,
+      )
+      .join('\n')}`;
 
-    const response = gptResponse.text.replace(/(^")|("$)|(doctor: ")/gi, '');
+    console.log(prompt);
+
+    const gptResponse = await gpt.sendMessage(prompt);
+
+    const response = gptResponse.text.replace(/(^")|("$)|(doctor: ("|))/gi, '');
 
     lastMessage = Date.now();
     res.send({

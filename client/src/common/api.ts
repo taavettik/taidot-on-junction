@@ -1,7 +1,13 @@
 const baseUrl = 'http://localhost:3000';
 
 export const api = {
-  chat: async (message: string) => {
+  chat: async ({
+    message,
+    previousMessages,
+  }: {
+    message: string;
+    previousMessages: { from: 'ai' | 'user'; message: string }[];
+  }) => {
     const res = await fetch(`${baseUrl}/chat`, {
       method: 'post',
       headers: {
@@ -9,6 +15,7 @@ export const api = {
       },
       body: JSON.stringify({
         message,
+        previousMessages,
       }),
     });
 

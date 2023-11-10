@@ -10,7 +10,11 @@ export function FrontPage() {
     onSuccess: (data) => {
       setResponse(data.response);
 
-      setPreviousMessages((messages) => [...messages, message]);
+      setPreviousMessages((messages) => [
+        ...messages,
+        { from: 'user', message },
+        { from: 'ai', message: data.response },
+      ]);
       setMessage('');
     },
   });
@@ -18,7 +22,9 @@ export function FrontPage() {
   const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
 
-  const [previousMessages, setPreviousMessages] = useState<string[]>([]);
+  const [previousMessages, setPreviousMessages] = useState<
+    { from: 'ai' | 'user'; message: string }[]
+  >([]);
 
   return (
     <Stack axis="y" spacing={8}>
@@ -33,7 +39,7 @@ export function FrontPage() {
         <button
           disabled={sendMessage.isPending}
           onClick={() => {
-            sendMessage.mutate(message);
+            sendMessage.mutate({ message, previousMessages });
           }}
         >
           Lähetä
@@ -41,7 +47,13 @@ export function FrontPage() {
       </Stack>
 
       {previousMessages.length > 0 && (
-        <Text variant="body">&gt; {previousMessages.slice(-1)[0]}</Text>
+        <Text variant="body">
+          &gt;{' '}
+          {
+            previousMessages.filter((msg) => msg.from === 'user').slice(-1)[0]
+              .message
+          }
+        </Text>
       )}
 
       <Text variant="body">{sendMessage.isPending ? '...' : response}</Text>
