@@ -15,7 +15,8 @@ export const typographies = {
 export const theme = {
   typographies,
   colors: {
-    primary: 'rgba(97, 182, 30, 1)',
+    primary: '#000654',
+    text: 'white',
   },
 };
 
