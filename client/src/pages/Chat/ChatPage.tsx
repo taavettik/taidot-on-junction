@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { api } from '../common/api';
+import { api } from '../../common/api';
 import { useMutation } from '@tanstack/react-query';
-import { Stack } from '../components/Stack';
-import { Text } from '../components/Text';
+import { Stack } from '../../components/Stack';
+import { Text } from '../../components/Text';
+import { ChatMessage } from './ChatMessage';
 
-export function FrontPage() {
+export function ChatPage() {
   const sendMessage = useMutation({
     mutationFn: api.chat,
     onSuccess: (data) => {
@@ -28,6 +29,14 @@ export function FrontPage() {
 
   return (
     <Stack axis="y" spacing={8}>
+      <Text variant="bodyBold" color="extraDarkPrimary">
+        Today
+      </Text>
+
+      <ChatMessage from="ai">Hello</ChatMessage>
+
+      <ChatMessage from="user">Hello</ChatMessage>
+
       <Stack axis="x" width={500}>
         <input
           style={{ flex: 1 }}

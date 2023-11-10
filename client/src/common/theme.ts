@@ -17,6 +17,10 @@ export const typographies = {
     element: 'span',
     fontSize: '16px',
   },
+  bodyBold: {
+    fontSize: '16px',
+    fontWeight: 600,
+  },
   header: {
     element: 'h1',
     fontWeight: 500,
@@ -24,15 +28,21 @@ export const typographies = {
   },
 } satisfies Record<string, Typography>;
 
+const colors = {
+  primary: '#D0E0E3',
+  neutralBackgroundHover: '#E4E6F6',
+  neutralBackground: '#F0F1FC',
+  mutedDarkNeutral: '#65666A',
+  extraDarkPrimary: '#001D35',
+  textOnPrimary: 'white',
+  text: 'black',
+};
+
+export type Color = keyof typeof colors;
+
 export const theme = {
   typographies,
-  colors: {
-    primary: '#D0E0E3',
-    neutralBackgroundHover: '#E4E6F6',
-    mutedDarkNeutral: '#65666A',
-    textOnPrimary: 'white',
-    text: 'black',
-  },
+  colors,
 };
 
 export type Theme = typeof theme;

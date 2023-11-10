@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './common/theme';
 import { PageLayout } from './components/PageLayout';
-import { FrontPage } from './pages/FrontPage';
+import { ChatPage } from './pages/Chat/ChatPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Outlet,
@@ -25,7 +25,7 @@ const rootRoute = new RootRoute({
 const chatRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: FrontPage,
+  component: ChatPage,
 });
 
 const dataRoute = new Route({
