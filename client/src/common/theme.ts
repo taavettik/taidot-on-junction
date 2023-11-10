@@ -10,6 +10,11 @@ export const typographies = {
     element: 'span',
     fontSize: '16px',
   },
+  header: {
+    element: 'h1',
+    fontWeight: 500,
+    fontSize: '28px',
+  },
 } satisfies Record<string, Typography>;
 
 export const theme = {
