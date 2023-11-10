@@ -21,7 +21,8 @@ export const theme = {
   typographies,
   colors: {
     primary: '#000654',
-    text: 'white',
+    textOnPrimary: 'white',
+    text: 'black',
   },
 };
 

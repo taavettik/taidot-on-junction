@@ -9,8 +9,8 @@ export function PageLayout({ children }: { children: ReactNode }) {
       <Navbar>
         <img width={64} height={64} src={logo} />
 
-        <Text variant="header" color="text">
-          Navigaatio
+        <Text variant="header" color="textOnPrimary">
+          HULLU pain mGanament
         </Text>
       </Navbar>
 
