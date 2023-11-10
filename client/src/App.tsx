@@ -19,7 +19,7 @@ export function App() {
           >
             <img src={logo} />
 
-            <Text variant="body">HULLU pain mGament</Text>
+            <Text variant="body">HULLU PAIN mGament</Text>
           </Stack>
         </Navbar>
       </div>
