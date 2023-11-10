@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom';
 import { Input } from '../../components/Input';
 import { IconButton } from '../../components/IconButton';
 import { RightArrowIcon } from '../../common/icons';
+import { Loader } from './Loader';
 
 export function ChatPage() {
   const sendMessage = useMutation({
@@ -77,7 +78,11 @@ export function ChatPage() {
           <ChatMessage from={msg.from}>{msg.message}</ChatMessage>
         ))}
 
-        {sendMessage.isPending && <ChatMessage from="ai">...</ChatMessage>}
+        {sendMessage.isPending && (
+          <ChatMessage from="ai">
+            <Loader />
+          </ChatMessage>
+        )}
 
         {sendMessage.error && (
           <ChatMessage from="ai">
