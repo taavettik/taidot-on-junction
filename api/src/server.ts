@@ -39,7 +39,15 @@ app.post('/chat', async (req, res) => {
 
     console.log(prompt);
 
-    const gptResponse = await gpt.sendMessage(prompt);
+    const gptResponse = await Promise.race([
+      gpt.sendMessage(prompt),
+      sleep(20000),
+    ]);
+
+    if (!(gptResponse instanceof Object)) {
+      res.status(408).send('GPT timed out');
+      return;
+    }
 
     const response = gptResponse.text.replace(/(^")|("$)|(doctor: ("|))/gi, '');
 

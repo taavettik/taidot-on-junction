@@ -48,6 +48,16 @@ export function ChatPage() {
     setFocus('message');
   }, [sendMessage.isPending]);
 
+  useEffect(() => {
+    if (!sendMessage.error) {
+      return;
+    }
+
+    setTimeout(() => {
+      sendMessage.mutate(messages);
+    }, 1000);
+  }, [sendMessage.error]);
+
   const context = document.getElementById('context');
 
   return (
@@ -68,6 +78,14 @@ export function ChatPage() {
         ))}
 
         {sendMessage.isPending && <ChatMessage from="ai">...</ChatMessage>}
+
+        {sendMessage.error && (
+          <ChatMessage from="ai">
+            <Text variant="body" color="error">
+              There was an error sending your message. Trying again...
+            </Text>
+          </ChatMessage>
+        )}
       </MessagesContainer>
 
       {context &&

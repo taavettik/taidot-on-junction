@@ -30,6 +30,7 @@ export const typographies = {
 
 const colors = {
   primary: '#D0E0E3',
+  error: '#BA0101',
   primaryMuted: '#7A95AC',
   neutralBackgroundHover: '#E4E6F6',
   neutralBackground: '#F0F1FC',
