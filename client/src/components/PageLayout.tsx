@@ -2,7 +2,7 @@ import React, { ReactNode, useRef } from 'react';
 import styled from 'styled-components';
 import { Text } from './Text';
 import logo from '../../assets/painload.png';
-import { LampIcon } from '../common/icons';
+import { ChartIcon, ChatIcon, DeviceIcon, ProfileIcon } from '../common/icons';
 import { IconType } from 'react-icons/lib';
 import { Link } from '@tanstack/react-router';
 import phone from '../../assets/phone.png';
@@ -35,16 +35,16 @@ export function PageLayout({ children }: { children: ReactNode }) {
           <div id="context"></div>
 
           <BottomNav>
-            <BottomMenuItem link="/" icon={LampIcon}>
+            <BottomMenuItem link="/" icon={ChatIcon}>
               Chat
             </BottomMenuItem>
-            <BottomMenuItem link="/data" icon={LampIcon}>
+            <BottomMenuItem link="/data" icon={ChartIcon}>
               Your data
             </BottomMenuItem>
-            <BottomMenuItem link="/device" icon={LampIcon}>
+            <BottomMenuItem link="/device" icon={DeviceIcon}>
               Device
             </BottomMenuItem>
-            <BottomMenuItem link="/account" icon={LampIcon}>
+            <BottomMenuItem link="/account" icon={ProfileIcon}>
               Account
             </BottomMenuItem>
           </BottomNav>
