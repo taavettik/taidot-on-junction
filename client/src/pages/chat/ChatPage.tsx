@@ -161,7 +161,7 @@ export function ChatPage() {
           </ChatMessage>
         )}
 
-        {index > 1 && (
+        {index > 2 && (
           <ChatMessage from="ai">
             <img style={{ width: 210, objectFit: 'contain' }} src={skiplan} />
           </ChatMessage>
