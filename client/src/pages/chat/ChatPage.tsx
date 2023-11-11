@@ -109,8 +109,14 @@ export function ChatPage() {
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: { message: string }) => {
     setValue('message', '');
+
+    setIndex(1);
+    setMessages((messages) => [
+      { from: 'user', message: data.message },
+      ...messages,
+    ]);
 
     setTimeout(() => {
       setIndex((index) => index + 1);
