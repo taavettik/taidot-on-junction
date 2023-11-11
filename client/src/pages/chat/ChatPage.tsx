@@ -25,11 +25,23 @@ export function ChatPage() {
     },
   });
 
+  const state = JSON.parse(localStorage.getItem('state') || '{}');
+
   const [messages, setMessages] = useState<
     { from: 'ai' | 'user'; message: string }[]
-  >([]);
+  >(state.messages || []);
 
-  const [summary, setSummary] = useState('');
+  const [summary, setSummary] = useState(state.summary || '');
+
+  useEffect(() => {
+    localStorage.setItem(
+      'state',
+      JSON.stringify({
+        messages,
+        summary,
+      }),
+    );
+  }, [messages, summary]);
 
   console.log(summary);
 
