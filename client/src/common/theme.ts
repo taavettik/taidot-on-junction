@@ -37,6 +37,7 @@ const colors = {
   mutedDarkNeutral: '#65666A',
   lightNeutral: '#F4F4F4',
   extraDarkPrimary: '#001D35',
+  darkPrimary: '#003362',
   textOnPrimary: 'white',
   text: 'black',
 };

@@ -5,7 +5,9 @@ import { Card } from '../../components/Card';
 export function DataPage() {
   return (
     <div>
-      <Card>Data page</Card>
+      <Card header="Hello world" onClick={() => alert('clicköd')}>
+        Data page
+      </Card>
 
       <StreamGraphComponent />
     </div>
