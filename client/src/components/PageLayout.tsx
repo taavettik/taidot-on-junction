@@ -8,8 +8,8 @@ import { Link } from '@tanstack/react-router';
 import phone from '../../assets/phone.png';
 
 const PHONE_DIMENSIONS = {
-  width: 1640,
-  height: 3540,
+  width: 1443,
+  height: 3050,
 };
 
 const ASPECT = PHONE_DIMENSIONS.width / PHONE_DIMENSIONS.height;
@@ -17,14 +17,9 @@ const ASPECT = PHONE_DIMENSIONS.width / PHONE_DIMENSIONS.height;
 export function PageLayout({ children }: { children: ReactNode }) {
   const phoneRef = useRef<HTMLImageElement>(null);
 
-  const containerHeight = (phoneRef.current?.height || 0) - 90;
-  const containerWidth = containerHeight * ASPECT;
-
   return (
     <OuterWrapper>
-      <Wrapper>
-        <Phone src={phone} ref={phoneRef}></Phone>
-        <Container style={{ height: containerHeight, width: containerWidth }}>
+        <Container>
           <TopBar>
             <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
           </TopBar>
@@ -49,7 +44,6 @@ export function PageLayout({ children }: { children: ReactNode }) {
             </BottomMenuItem>
           </BottomNav>
         </Container>
-      </Wrapper>
     </OuterWrapper>
   );
 }
@@ -89,30 +83,27 @@ const BottomNavLink = styled(Link)`
   width: 72px;
 `;
 
-const Phone = styled.img`
-  height: 100vh;
-  object-fit: contain;
-  position: absolute;
-  pointer-events: none;
-`;
-
-const Wrapper = styled.div``;
-
 const OuterWrapper = styled.div`
-  width: 100vw;
   justify-content: center;
+  align-items: center;
   display: flex;
+  height: 100vh;
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 330px;
+  max-width: 400px;
   border-radius: 32px;
-  margin-left: 18px;
-  margin-top: 32px;
+  height: Calc(100vh - 64px);
+  max-height: 900px;
   overflow: hidden;
   background-color: white;
+
+  @media screen and (max-width: 400px) {
+    border-radius: 0;
+    height: 100vh;
+  }
 `;
 
 const Scroller = styled.div`
