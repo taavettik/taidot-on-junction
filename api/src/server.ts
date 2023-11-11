@@ -2,9 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { getGpt } from './common/gpt';
+import { sleep } from './common/utils';
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,30 +26,67 @@ app.post('/chat', async (req, res) => {
   }
 
   const messages = [...req.body.messages].slice(-6);
+  const context = req.body.summary;
+
+  if (context && context.length > 300) {
+    res.status(400).send('Summary too long');
+    return;
+  }
 
   try {
     const gpt = await getGpt();
 
-    const prompt = `This is a play portraing a doctor's appointment. The doctor specializes in chronic pain treatment.
-    Give the next line from the doctor in less than 280 characters. Respond with only what the doctor says. The previous lines are here:
-    ${messages
-      .map(
-        (msg) => `${msg.from === 'ai' ? 'Doctor' : 'Patient'}: ${msg.message}`,
-      )
-      .join('\n')}`;
+    const callGpt = async (prompt: string) => {
+      const promise = await Promise.race([
+        gpt.sendMessage(prompt),
+        sleep(20000),
+      ]);
 
-    console.log(prompt);
+      if (!(promise instanceof Object)) {
+        res.status(408).send('GPT timed out');
 
-    const gptResponse = await gpt.sendMessage(prompt);
+        throw new Error('GPT timed out');
+      }
 
-    const response = gptResponse.text.replace(/(^")|("$)|(doctor: ("|))/gi, '');
+      return promise.text;
+    };
+
+    const role = `Physiologist`;
+    const user = `Patient`;
+
+    const lines = messages
+      .map((msg) => `${msg.from === 'ai' ? role : user}: "${msg.message}"`)
+      .join('\n');
+
+    const prompt = `This is a play portraing a text chat between physiologist
+    and a patient. The patient has chronic pain.
+    Give the next line from ${role} in less than 280 characters. Respond with only what ${role} says.
+    ${context ? `The scenario is the following: ${context}.` : ''}
+    The previous lines are here:
+    ${lines}`;
+
+    const line = await callGpt(prompt);
+
+    const response = line.replace(
+      new RegExp(`(^")|("$)|(${role.toLocaleLowerCase()}: ("|))`, 'gi'),
+      '',
+    );
+
+    const summaryPrompt = `Give a summary of the play so far in less than 280 characters.
+    ${context ? `The scenario is the following: ${context}.` : ''}
+    Here are the lines: ${lines}
+    ${role}: "${response}"`;
+
+    const summaryResponse = await callGpt(summaryPrompt);
 
     lastMessage = Date.now();
     res.send({
       response,
+      summary: summaryResponse,
     });
   } catch (e) {
-    res.sendStatus(500);
+    console.error(e);
+
     return;
   }
 });
