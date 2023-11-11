@@ -7,5 +7,8 @@ export default defineConfig({
     hmr: {
       port: 6113,
     }
+  },
+  build: {
+    outDir: './build'
   }
 })

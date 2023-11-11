@@ -1,0 +1,17 @@
+FROM  --platform=linux/amd64 node:lts-alpine AS builder
+
+WORKDIR /service
+
+COPY ./package*.json ./
+
+RUN npm ci
+
+COPY ./ ./
+
+RUN npm run build
+
+FROM nginx:alpine
+
+COPY --from=builder /service/build /usr/share/nginx/html
+
+EXPOSE 80
