@@ -86,6 +86,7 @@ const Container = styled.div`
   max-width: 400px;
   border-radius: 32px;
   height: Calc(100vh - 64px);
+  width: 100vw;
   max-height: 900px;
   overflow: hidden;
   background-color: white;
@@ -105,7 +106,7 @@ const Scroller = styled.div`
 `;
 
 const TopBar = styled.div`
-  padding: 32px 32px;
+  padding: 16px 32px;
   display: flex;
   justify-content: center;
 `;
