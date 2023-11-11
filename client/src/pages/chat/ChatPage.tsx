@@ -43,8 +43,6 @@ export function ChatPage() {
     );
   }, [messages, summary]);
 
-  console.log(summary);
-
   const { handleSubmit, register, setValue, setFocus } = useForm<{
     message: string;
   }>();
@@ -137,7 +135,9 @@ export function ChatPage() {
                   style={{ flex: 1 }}
                   disabled={sendMessage.isPending}
                   placeholder="Type here"
-                  {...register('message')}
+                  {...register('message', {
+                    required: true,
+                  })}
                 ></Input>
 
                 <IconButton

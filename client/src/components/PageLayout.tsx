@@ -1,49 +1,39 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Text } from './Text';
 import logo from '../../assets/painload.png';
 import { ChartIcon, ChatIcon, DeviceIcon, ProfileIcon } from '../common/icons';
 import { IconType } from 'react-icons/lib';
 import { Link } from '@tanstack/react-router';
-import phone from '../../assets/phone.png';
-
-const PHONE_DIMENSIONS = {
-  width: 1443,
-  height: 3050,
-};
-
-const ASPECT = PHONE_DIMENSIONS.width / PHONE_DIMENSIONS.height;
 
 export function PageLayout({ children }: { children: ReactNode }) {
-  const phoneRef = useRef<HTMLImageElement>(null);
-
   return (
     <OuterWrapper>
-        <Container>
-          <TopBar>
-            <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
-          </TopBar>
+      <Container>
+        <TopBar>
+          <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
+        </TopBar>
 
-          <Scroller id="scroller">{children}</Scroller>
+        <Scroller id="scroller">{children}</Scroller>
 
-          {/* Place to render stuff outside the scroller */}
-          <div id="context"></div>
+        {/* Place to render stuff outside the scroller */}
+        <div id="context"></div>
 
-          <BottomNav>
-            <BottomMenuItem link="/" icon={ChatIcon}>
-              Chat
-            </BottomMenuItem>
-            <BottomMenuItem link="/data" icon={ChartIcon}>
-              Your data
-            </BottomMenuItem>
-            <BottomMenuItem link="/device" icon={DeviceIcon}>
-              Device
-            </BottomMenuItem>
-            <BottomMenuItem link="/account" icon={ProfileIcon}>
-              Account
-            </BottomMenuItem>
-          </BottomNav>
-        </Container>
+        <BottomNav>
+          <BottomMenuItem link="/" icon={ChatIcon}>
+            Chat
+          </BottomMenuItem>
+          <BottomMenuItem link="/data" icon={ChartIcon}>
+            Your data
+          </BottomMenuItem>
+          <BottomMenuItem link="/device" icon={DeviceIcon}>
+            Device
+          </BottomMenuItem>
+          <BottomMenuItem link="/account" icon={ProfileIcon}>
+            Account
+          </BottomMenuItem>
+        </BottomNav>
+      </Container>
     </OuterWrapper>
   );
 }
