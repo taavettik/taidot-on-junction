@@ -20,12 +20,18 @@ export function ChatPage() {
         ...messages,
         { from: 'ai', message: data.response },
       ]);
+
+      setSummary(data.summary);
     },
   });
 
   const [messages, setMessages] = useState<
     { from: 'ai' | 'user'; message: string }[]
   >([]);
+
+  const [summary, setSummary] = useState('');
+
+  console.log(summary);
 
   const { handleSubmit, register, setValue, setFocus } = useForm<{
     message: string;

@@ -7,8 +7,8 @@ export async function getGpt() {
     apiKey: secrets.OPENAI_TOKEN,
     completionParams: {
       model: 'gpt-3.5-turbo',
-      temperature: 0.8,
-      top_p: 0.8,
+      temperature: 0.9,
+      top_p: 0.9,
     },
   });
 }
