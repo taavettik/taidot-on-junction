@@ -11,7 +11,7 @@ import { Input } from '../../components/Input';
 import { IconButton } from '../../components/IconButton';
 import { RightArrowIcon } from '../../common/icons';
 import { Loader } from './Loader';
-import { Spacer } from '../../components/Spacer';
+import skiplan from '../../../assets/ski.png';
 
 export function ChatPage() {
   const sendMessage = useMutation({
@@ -39,13 +39,12 @@ export function ChatPage() {
 
   const state = JSON.parse(localStorage.getItem('state') || '{}');
 
-  const [messages, setMessages] = useState<Message[]>(
-    state.messages
-      ? state.messages.slice(-1)[0]?.from === 'ai'
-        ? state.messages
-        : state.messages.slice(-6, -1)
-      : [],
-  );
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      from: 'ai',
+      message: 'Here is a personalised plan for you:',
+    },
+  ]);
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
@@ -107,19 +106,24 @@ export function ChatPage() {
 
   const context = document.getElementById('context');
 
-  const onSubmit = async (data: { message: string }) => {
-    const newMessages = [
-      ...messages,
-      { from: 'user', message: data.message },
-    ] as Message[];
+  const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-    setMessages(newMessages);
-
+  const onSubmit = async () => {
     setValue('message', '');
 
-    sendMessage.mutate(newMessages);
-    setSuggestions([]);
-    getSuggestions.reset();
+    setTimeout(() => {
+      setIndex((index) => index + 1);
+      setLoading(false);
+      setTimeout(() => {
+        setLoading(true);
+      }, 100);
+      setTimeout(() => {
+        setIndex((index) => index + 1);
+        setLoading(false);
+      }, 4000);
+    }, 2000);
+    setLoading(true);
   };
 
   return (
@@ -129,17 +133,15 @@ export function ChatPage() {
       </Text>
 
       <MessagesContainer>
-        {messages.length === 0 && (
-          <Text variant="body">
-            No messages yet. Is there something on your mind?
-          </Text>
+        {index === 0 && (
+          <Text variant="body">No messages yet. What's on your mind?</Text>
         )}
 
-        {messages.map((msg) => (
+        {messages.slice(0, index).map((msg) => (
           <ChatMessage from={msg.from}>{msg.message}</ChatMessage>
         ))}
 
-        {sendMessage.isPending && (
+        {loading && (
           <ChatMessage from="ai">
             <Loader />
           </ChatMessage>
@@ -152,6 +154,12 @@ export function ChatPage() {
             </Text>
           </ChatMessage>
         )}
+
+        {index > 1 && (
+          <ChatMessage from="ai">
+            <img style={{ width: 210, objectFit: 'contain' }} src={skiplan} />
+          </ChatMessage>
+        )}
       </MessagesContainer>
 
       {context &&
@@ -162,32 +170,6 @@ export function ChatPage() {
               onSubmit={handleSubmit(onSubmit)}
               style={{ width: '100%' }}
             >
-              <Stack axis="y" spacing={4} align="center">
-                {suggestions.map((sug) => (
-                  <Suggestion
-                    disabled={sendMessage.isPending}
-                    onClick={() => {
-                      onSubmit({ message: sug });
-
-                      setSuggestions([]);
-                    }}
-                    type="button"
-                  >
-                    <Text variant="body">{sug}</Text>
-                  </Suggestion>
-                ))}
-
-                {getSuggestions.isPending && (
-                  <>
-                    <Loader />
-
-                    <Spacer axis="y" spacing={4} />
-                  </>
-                )}
-
-                <Spacer axis="y" spacing={4} />
-              </Stack>
-
               <input type="hidden" autoComplete="false"></input>
 
               <Stack axis="x" width="100%">
@@ -225,22 +207,4 @@ const InputContainer = styled.div`
   flex-direction: row;
   background-color: ${(p) => p.theme.colors.lightNeutral};
   padding: 16px;
-`;
-
-const Suggestion = styled.button`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  text-align: left;
-  padding: 8px;
-  border-radius: 8px;
-  gap: 8px;
-  border: none;
-  cursor: pointer;
-  background-color: ${(p) => p.theme.colors.lightNeutral};
-
-  &:hover {
-    background-color: ${(p) => p.theme.colors.neutralBackgroundHover};
-  }
 `;

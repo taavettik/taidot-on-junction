@@ -5,7 +5,7 @@ import { getGpt } from './common/gpt';
 import { sleep } from './common/utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-import type { ChatGPTAPI } from 'chatgpt';
+import { openai, type ChatGPTAPI } from 'chatgpt';
 
 const app = express();
 const port = 8080;
