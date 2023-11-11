@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Text } from './Text';
-import logo from '../../assets/painload.png';
+import logo from '../../assets/logo.png';
 import { ChartIcon, ChatIcon, DeviceIcon, ProfileIcon } from '../common/icons';
 import { IconType } from 'react-icons/lib';
 import { Link } from '@tanstack/react-router';
@@ -11,7 +11,7 @@ export function PageLayout({ children }: { children: ReactNode }) {
     <OuterWrapper>
       <Container>
         <TopBar>
-          <img width={150} src={logo} style={{ objectFit: 'contain' }}></img>
+          <img width={48} src={logo} style={{ objectFit: 'contain' }}></img>
         </TopBar>
 
         <Scroller id="scroller">{children}</Scroller>
