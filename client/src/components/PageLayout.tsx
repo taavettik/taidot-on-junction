@@ -53,6 +53,7 @@ const Container = styled.div`
   width: 385px;
   border-radius: 32px;
   height: Calc(100vh - 64px);
+  width: 100vw;
   max-height: 900px;
   overflow: hidden;
   background-color: white;

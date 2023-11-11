@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Message, api } from '../../common/api';
 import { Stack } from '../../components/Stack';
@@ -11,25 +11,43 @@ import { Input } from '../../components/Input';
 import { IconButton } from '../../components/IconButton';
 import { RightArrowIcon } from '../../common/icons';
 import { Loader } from './Loader';
+import { Spacer } from '../../components/Spacer';
 
 export function ChatPage() {
   const sendMessage = useMutation({
     mutationFn: api.chat,
     onSuccess: (data) => {
-      setMessages((messages) => [
+      const newMessages = [
         ...messages,
         { from: 'ai', message: data.response },
-      ]);
+      ] as Message[];
+
+      setMessages(newMessages);
 
       setSummary(data.summary);
+
+      getSuggestions.mutate(newMessages);
+    },
+  });
+
+  const getSuggestions = useMutation({
+    mutationFn: api.suggestions,
+    onSuccess: (data) => {
+      setSuggestions(data);
     },
   });
 
   const state = JSON.parse(localStorage.getItem('state') || '{}');
 
-  const [messages, setMessages] = useState<
-    { from: 'ai' | 'user'; message: string }[]
-  >(state.messages || []);
+  const [messages, setMessages] = useState<Message[]>(
+    state.messages
+      ? state.messages.slice(-1)[0]?.from === 'ai'
+        ? state.messages
+        : state.messages.slice(-6, -1)
+      : [],
+  );
+
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const [summary, setSummary] = useState(state.summary || '');
 
@@ -48,15 +66,27 @@ export function ChatPage() {
   }>();
 
   useEffect(() => {
+    if (messages.length === 0) {
+      return;
+    }
+
+    getSuggestions.mutate(messages);
+  }, []);
+
+  useLayoutEffect(() => {
     const scroller = document.getElementById('scroller');
     if (!scroller) return;
 
     // scroll to bottom on new message
-    scroller.scrollTo({
-      top: scroller.scrollHeight,
-      behavior: 'smooth',
-    });
-  }, [messages.length]);
+    setTimeout(
+      () =>
+        scroller.scrollTo({
+          top: scroller.scrollHeight,
+          behavior: 'smooth',
+        }),
+      100,
+    );
+  }, [messages.length, suggestions.length]);
 
   useEffect(() => {
     if (sendMessage.isPending) {
@@ -76,6 +106,21 @@ export function ChatPage() {
   }, [sendMessage.error]);
 
   const context = document.getElementById('context');
+
+  const onSubmit = async (data: { message: string }) => {
+    const newMessages = [
+      ...messages,
+      { from: 'user', message: data.message },
+    ] as Message[];
+
+    setMessages(newMessages);
+
+    setValue('message', '');
+
+    sendMessage.mutate(newMessages);
+    setSuggestions([]);
+    getSuggestions.reset();
+  };
 
   return (
     <Wrapper>
@@ -170,4 +215,22 @@ const InputContainer = styled.div`
   flex-direction: row;
   background-color: ${(p) => p.theme.colors.lightNeutral};
   padding: 16px;
+`;
+
+const Suggestion = styled.button`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  padding: 8px;
+  border-radius: 8px;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: ${(p) => p.theme.colors.lightNeutral};
+
+  &:hover {
+    background-color: ${(p) => p.theme.colors.neutralBackgroundHover};
+  }
 `;
