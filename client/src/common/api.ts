@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000';
+const baseUrl = '/api';
 
 export type Message = { from: 'ai' | 'user'; message: string };
 

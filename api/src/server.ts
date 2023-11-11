@@ -5,7 +5,7 @@ import { getGpt } from './common/gpt';
 import { sleep } from './common/utils';
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -51,14 +51,15 @@ app.post('/chat', async (req, res) => {
       return promise.text;
     };
 
-    const role = `Doctor`;
+    const role = `Physiologist`;
     const user = `Patient`;
 
     const lines = messages
       .map((msg) => `${msg.from === 'ai' ? role : user}: "${msg.message}"`)
       .join('\n');
 
-    const prompt = `This is a play portraing a doctor's appointment for the patient with chronic pain.
+    const prompt = `This is a play portraing a text chat between physiologist
+    and a patient. The patient has chronic pain.
     Give the next line from ${role} in less than 280 characters. Respond with only what ${role} says.
     ${context ? `The scenario is the following: ${context}.` : ''}
     The previous lines are here:
