@@ -16,6 +16,7 @@
     "axios": "^1.6.1",
     "chatgpt": "^5.2.5",
     "lodash": "^4.17.21",
+    "perlin": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",

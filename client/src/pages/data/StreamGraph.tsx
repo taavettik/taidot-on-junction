@@ -9,6 +9,7 @@ import {
 } from 'victory';
 import styled from 'styled-components';
 import _ from 'lodash';
+import { generatePerlin } from './perlin';
 
 /*
   https://formidable.com/open-source/victory/gallery/stream-graph
@@ -49,10 +50,18 @@ export default class StreamGraphComponent extends React.Component<
 
   getStreamData() {
     const i = 5;
-    return _.range(26).map((j) => ({
+    const dataLength = 100;
+    const perlin1 = generatePerlin(dataLength);
+    const factor1 = 0.5;
+    const perlin2 = generatePerlin(dataLength);
+    const factor2 = 0.6;
+    console.log(perlin1);
+    console.log(perlin2);
+
+    return _.range(dataLength).map((j) => ({
       x: j,
-      y: (10 - i) * _.random(10 - i, 20 - 2 * i),
-      _y0: -1 * (10 - i) * _.random(10 - i, 20 - 2 * i),
+      y: perlin1[j] * factor1 + perlin2[j] * factor2, //+ (10 - i) * _.random(10 - i, 20 - 2 * i),
+      _y0: perlin1[j] * factor1 - perlin2[j] * factor2, // - 1 * (10 - i) * _.random(10 - i, 20 - 2 * i),
     }));
   }
 
@@ -75,7 +84,7 @@ export default class StreamGraphComponent extends React.Component<
           width={400}
           height={400}
           domain={{
-            x: [0, 25],
+            x: [0, 100],
             y: [-300, 300],
           }}
         >
