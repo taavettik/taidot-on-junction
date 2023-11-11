@@ -16,4 +16,17 @@ export const api = {
 
     return res.json();
   },
+  suggestions: async (messages: Message[]) => {
+    const res = await fetch(`${baseUrl}/suggestions`, {
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages,
+      }),
+    });
+
+    return res.json();
+  },
 };
