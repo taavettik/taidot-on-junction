@@ -33,7 +33,7 @@ export function DashboardPage() {
               <CardImage src={streak} />
             </Stack>
           </CardContainer>
-          <Card header="Todays excersize">
+          <Card header="Todays exercise">
             <Stack axis="y" spacing={10}>
               <Text variant="bodySmall" color="darkPrimary">
                 Not started yet. Start soon or you’ll lose your streak
