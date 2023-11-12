@@ -7,6 +7,7 @@ import step2header from './step2header.png';
 import sitting from './sitting.png';
 import jumping from './jumping.png';
 import confetti from './confetti.png';
+import ConfettiGenerator from 'confetti-js';
 import streak from '../../../assets/dashboard/streak.png';
 import chatPerson from '../../../assets/dashboard/chatPerson.png';
 import { Button } from '../../components/Button';
@@ -22,9 +23,19 @@ export function ExcercisePage() {
     if (step === 3) {
       setTimeout(() => {
         setStep(4);
-      }, 1000);
+      }, 3000);
     }
   }, [step]);
+
+  React.useEffect(() => {
+    if (step === 3) {
+      const confettiSettings = { target: 'confetti-canvas' };
+      const confetti = new ConfettiGenerator(confettiSettings);
+      confetti.render();
+
+      return () => confetti.clear();
+    }
+  });
 
   return (
     <>
@@ -201,6 +212,7 @@ export function ExcercisePage() {
       {step === 3 && (
         <>
           <Images>
+            <ConfettiContainer id="confetti-canvas"></ConfettiContainer>
             <img
               src={confetti}
               style={{
@@ -230,6 +242,15 @@ export function ExcercisePage() {
     </>
   );
 }
+
+const ConfettiContainer = styled.canvas`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+`;
 
 const Images = styled.div`
   position: relative;
