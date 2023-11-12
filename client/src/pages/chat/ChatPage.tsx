@@ -160,20 +160,35 @@ export function ChatPage() {
             <InputContainer>
               <form
                 autoComplete="off"
-                onSubmit={handleSubmit(async (data) => {
-                  const newMessages = [
-                    ...messages,
-                    { from: 'user', message: data.message },
-                  ] as Message[];
-
-                  setMessages(newMessages);
-
-                  setValue('message', '');
-
-                  sendMessage.mutate(newMessages);
-                })}
+                onSubmit={handleSubmit(onSubmit)}
                 style={{ width: '100%' }}
               >
+                <Stack axis="y" spacing={4} align="center">
+                  {suggestions.map((sug) => (
+                    <Suggestion
+                      disabled={sendMessage.isPending}
+                      onClick={() => {
+                        onSubmit({ message: sug });
+
+                        setSuggestions([]);
+                      }}
+                      type="button"
+                    >
+                      <Text variant="body">{sug}</Text>
+                    </Suggestion>
+                  ))}
+
+                  {getSuggestions.isPending && (
+                    <>
+                      <Loader />
+
+                      <Spacer axis="y" spacing={4} />
+                    </>
+                  )}
+
+                  <Spacer axis="y" spacing={4} />
+                </Stack>
+
                 <input type="hidden" autoComplete="false"></input>
 
                 <Stack axis="x" width="100%">
