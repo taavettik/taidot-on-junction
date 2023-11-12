@@ -78,81 +78,86 @@ export function ChatPage() {
   const context = document.getElementById('context');
 
   return (
-    <Stack axis="y" spacing={8}>
-      <Text variant="bodyBold" color="extraDarkPrimary">
-        Today
-      </Text>
+    <Wrapper>
+      <Stack axis="y" spacing={8}>
+        <Text variant="bodyBold" color="extraDarkPrimary">
+          Today
+        </Text>
 
-      <MessagesContainer>
-        {messages.length === 0 && (
-          <Text variant="body">
-            No messages yet. Is there something on your mind?
-          </Text>
-        )}
-
-        {messages.map((msg) => (
-          <ChatMessage from={msg.from}>{msg.message}</ChatMessage>
-        ))}
-
-        {sendMessage.isPending && (
-          <ChatMessage from="ai">
-            <Loader />
-          </ChatMessage>
-        )}
-
-        {sendMessage.error && (
-          <ChatMessage from="ai">
-            <Text variant="body" color="error">
-              There was an error sending your message. Trying again...
+        <MessagesContainer>
+          {messages.length === 0 && (
+            <Text variant="body">
+              No messages yet. Is there something on your mind?
             </Text>
-          </ChatMessage>
-        )}
-      </MessagesContainer>
+          )}
 
-      {context &&
-        createPortal(
-          <InputContainer>
-            <form
-              autoComplete="off"
-              onSubmit={handleSubmit(async (data) => {
-                const newMessages = [
-                  ...messages,
-                  { from: 'user', message: data.message },
-                ] as Message[];
+          {messages.map((msg) => (
+            <ChatMessage from={msg.from}>{msg.message}</ChatMessage>
+          ))}
 
-                setMessages(newMessages);
+          {sendMessage.isPending && (
+            <ChatMessage from="ai">
+              <Loader />
+            </ChatMessage>
+          )}
 
-                setValue('message', '');
+          {sendMessage.error && (
+            <ChatMessage from="ai">
+              <Text variant="body" color="error">
+                There was an error sending your message. Trying again...
+              </Text>
+            </ChatMessage>
+          )}
+        </MessagesContainer>
 
-                sendMessage.mutate(newMessages);
-              })}
-              style={{ width: '100%' }}
-            >
-              <input type="hidden" autoComplete="false"></input>
+        {context &&
+          createPortal(
+            <InputContainer>
+              <form
+                autoComplete="off"
+                onSubmit={handleSubmit(async (data) => {
+                  const newMessages = [
+                    ...messages,
+                    { from: 'user', message: data.message },
+                  ] as Message[];
 
-              <Stack axis="x" width="100%">
-                <Input
-                  style={{ flex: 1 }}
-                  disabled={sendMessage.isPending}
-                  placeholder="Type here"
-                  {...register('message', {
-                    required: true,
-                  })}
-                ></Input>
+                  setMessages(newMessages);
 
-                <IconButton
-                  disabled={sendMessage.isPending}
-                  type="submit"
-                  icon={RightArrowIcon}
-                />
-              </Stack>
-            </form>
-          </InputContainer>,
-          context,
-        )}
-    </Stack>
+                  setValue('message', '');
+
+                  sendMessage.mutate(newMessages);
+                })}
+                style={{ width: '100%' }}
+              >
+                <input type="hidden" autoComplete="false"></input>
+
+                <Stack axis="x" width="100%">
+                  <Input
+                    style={{ flex: 1 }}
+                    disabled={sendMessage.isPending}
+                    placeholder="Type here"
+                    {...register('message', {
+                      required: true,
+                    })}
+                  ></Input>
+
+                  <IconButton
+                    disabled={sendMessage.isPending}
+                    type="submit"
+                    icon={RightArrowIcon}
+                  />
+                </Stack>
+              </form>
+            </InputContainer>,
+            context,
+          )}
+      </Stack>
+    </Wrapper>
   );
 }
+const Wrapper = styled.div`
+  padding: 24px 32px;
+`;
 
 const MessagesContainer = styled.div`
   display: flex;

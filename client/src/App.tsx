@@ -4,6 +4,7 @@ import { theme } from './common/theme';
 import { PageLayout } from './components/PageLayout';
 import { ChatPage } from './pages/chat/ChatPage';
 import { DataPage } from './pages/data/DataPage';
+import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Outlet,
@@ -12,6 +13,7 @@ import {
   Router,
   RouterProvider,
 } from '@tanstack/react-router';
+import { ExcercisePage } from './pages/excercise/ExcercisePage';
 
 const queryClient = new QueryClient();
 
@@ -25,7 +27,7 @@ const rootRoute = new RootRoute({
 
 const chatRoute = new Route({
   getParentRoute: () => rootRoute,
-  path: '/',
+  path: '/chat',
   component: ChatPage,
 });
 
@@ -35,7 +37,24 @@ const dataRoute = new Route({
   component: DataPage,
 });
 
-const routeTree = rootRoute.addChildren([chatRoute, dataRoute]);
+const dashboardRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: DashboardPage,
+});
+
+const excerciseRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/excercise',
+  component: ExcercisePage,
+});
+
+const routeTree = rootRoute.addChildren([
+  chatRoute,
+  dataRoute,
+  dashboardRoute,
+  excerciseRoute,
+]);
 
 const router = new Router({ routeTree });
 

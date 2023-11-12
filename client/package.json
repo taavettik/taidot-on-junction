@@ -22,8 +22,10 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-icons": "^4.11.0",
+    "react-router-dom": "^6.18.0",
     "styled-components": "^6.1.1",
     "swr": "^2.2.4",
+    "tslib": "^2.6.2",
     "typescript": "^5.2.2",
     "victory": "^36.6.12",
     "vite": "^4.5.0"

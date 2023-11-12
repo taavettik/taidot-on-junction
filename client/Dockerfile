@@ -6,4 +6,4 @@ COPY ./package*.json ./
 
 EXPOSE 8080
 
-CMD npm i && npm start
+CMD npm i tslib && npm i && npm start

@@ -1,19 +1,19 @@
 services:
   ingress:
-    container_name: painload-ingress
+    container_name: aij-ingress
     image: nginx:alpine
     volumes:
       - ./docker-nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "6120:80"
   api:
-    container_name: painload-api
+    container_name: aij-api
     build: ./api
     volumes:
       - ./api:/service
       - /service/node_modules
   client:
-    container_name: painload-client
+    container_name: aij-client
     build: ./client
     ports:
       - "6113:6113"
