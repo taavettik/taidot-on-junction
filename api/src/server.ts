@@ -17,12 +17,12 @@ let lastMessage = Date.now();
 
 const COOLDOWN = 1000;
 
-const role = `Chatbot`;
-const user = `Man`;
+const role = `Doctor`;
+const user = `Patient`;
 
 const BASE_PROMPT = `
-  This is a play portraing a conversation between ${role} specializing in chronic pain management
-  and ${user}.`;
+  This is a play portraing a text conversation between a ${role} specializing in chronic pain management
+  and the ${user}.`;
 
 function formatLines(messages: { from: 'ai' | 'user'; message: string }[]) {
   return messages
